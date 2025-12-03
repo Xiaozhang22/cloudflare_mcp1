@@ -1,0 +1,16 @@
+{
+  "name": "github-trending-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GitHub Trending API + MCP Server on Cloudflare Pages",
+  "scripts": {
+    "dev": "wrangler pages dev public --compatibility-date=2024-11-01",
+    "build": "echo 'No build step required'",
+    "deploy": "wrangler pages deploy public --project-name=github-trending-service"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "wrangler": "^3.91.0",
+    "typescript": "^5.3.3"
+  }
+}

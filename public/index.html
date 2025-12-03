@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Trending Service</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      color: #1a1a2e;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 32px;
+    }
+    h2 {
+      font-size: 1.25rem;
+      margin: 24px 0 12px;
+      color: #4a4a6a;
+    }
+    .endpoint {
+      background: #f5f5f7;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 12px 0;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 14px;
+    }
+    .method {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+    .get { background: #61affe; color: white; }
+    .post { background: #49cc90; color: white; }
+    code {
+      background: #e8e8ec;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .params {
+      margin-top: 8px;
+      padding-left: 16px;
+      color: #666;
+      font-size: 13px;
+    }
+    a {
+      color: #667eea;
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+    .footer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #eee;
+      color: #888;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 GitHub Trending Service</h1>
+    <p class="subtitle">获取 GitHub 热门项目的 REST API 和 MCP 服务</p>
+
+    <h2>📡 REST API</h2>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <a href="/api/trending">/api/trending</a>
+      <div class="params">
+        参数: <code>language</code> (可选), <code>since</code> (daily/weekly/monthly)
+      </div>
+    </div>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <a href="/api/openapi.json">/api/openapi.json</a>
+      <div class="params">OpenAPI 规范 - 用于 GPT/Gemini Function Calling</div>
+    </div>
+
+    <h2>🤖 MCP Server</h2>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      /mcp/sse
+      <div class="params">SSE 端点 - 用于 Claude Desktop / Kiro 等 MCP 客户端</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      /mcp/message
+      <div class="params">消息端点 - MCP 协议通信</div>
+    </div>
+
+    <h2>🔧 使用示例</h2>
+    <div class="endpoint" style="white-space: pre-wrap;">
+# 获取今日热门项目
+curl /api/trending
+
+# 获取 Python 本周热门
+curl "/api/trending?language=python&since=weekly"
+
+# MCP 配置 (mcp.json)
+{
+  "mcpServers": {
+    "github-trending": {
+      "type": "sse",
+      "url": "https://your-domain.pages.dev/mcp/sse"
+    }
+  }
+}</div>
+
+    <div class="footer">
+      <a href="/health">健康检查</a> · 
+      <a href="https://github.com" target="_blank">GitHub</a> · 
+      部署在 Cloudflare Pages
+    </div>
+  </div>
+</body>
+</html>

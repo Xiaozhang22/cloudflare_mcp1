@@ -1,0 +1,8 @@
+node_modules/
+.wrangler/
+.dev.vars
+*.log
+.DS_Store
+
+# 旧的 packages 目录 (已迁移到 functions)
+packages/
