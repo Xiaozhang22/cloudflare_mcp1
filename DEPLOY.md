@@ -72,7 +72,7 @@ curl https://cloudflare-mcp1.zx1993.top/health
   "mcpServers": {
     "github-trending": {
       "type": "sse",
-      "url": "https://cloudflare-mcp1.zx1993.top/mcp/sse"
+      "url": "https://cloudflare-mcp1.zx1993.top/mcp/message"
     }
   }
 }
@@ -84,7 +84,7 @@ curl https://cloudflare-mcp1.zx1993.top/health
   "mcpServers": {
     "github-trending": {
       "type": "sse", 
-      "url": "https://cloudflare-mcp1.zx1993.top/mcp/sse"
+      "url": "https://cloudflare-mcp1.zx1993.top/mcp/message"
     }
   }
 }
@@ -126,7 +126,7 @@ A: 检查 Build command 是否正确填写为 `npm run build`
 A: GitHub 可能临时限制了请求，稍后重试或配置 KV 缓存
 
 ### Q: MCP 连接失败
-A: 确认 URL 使用 `https://` 且路径正确 `/mcp/sse`
+A: 确认 URL 使用 `https://` 且路径正确 `/mcp/message`
 
 ### Q: 如何查看日志
 A: Cloudflare Dashboard → 你的项目 → Functions → Logs

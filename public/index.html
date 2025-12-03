@@ -99,14 +99,9 @@
 
     <h2>🤖 MCP Server</h2>
     <div class="endpoint">
-      <span class="method get">GET</span>
-      /mcp/sse
-      <div class="params">SSE 端点 - 用于 Claude Desktop / Kiro 等 MCP 客户端</div>
-    </div>
-    <div class="endpoint">
       <span class="method post">POST</span>
       /mcp/message
-      <div class="params">消息端点 - MCP 协议通信</div>
+      <div class="params">MCP 端点 - 用于 Claude Desktop / Kiro 等 MCP 客户端 (StreamableHTTP)</div>
     </div>
 
     <h2>🔧 使用示例</h2>
@@ -122,7 +117,7 @@ curl "/api/trending?language=python&since=weekly"
   "mcpServers": {
     "github-trending": {
       "type": "sse",
-      "url": "https://cloudflare-mcp1.zx1993.top/mcp/sse"
+      "url": "https://cloudflare-mcp1.zx1993.top/mcp/message"
     }
   }
 }</div>

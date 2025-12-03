@@ -16,7 +16,7 @@
 - **主页**: https://cloudflare-mcp1.zx1993.top
 - **REST API**: https://cloudflare-mcp1.zx1993.top/api/trending
 - **OpenAPI 规范**: https://cloudflare-mcp1.zx1993.top/api/openapi.json
-- **MCP 端点**: https://cloudflare-mcp1.zx1993.top/mcp/sse
+- **MCP 端点**: https://cloudflare-mcp1.zx1993.top/mcp/message
 
 ## 项目结构
 
@@ -141,12 +141,13 @@ curl "https://cloudflare-mcp1.zx1993.top/api/trending?language=typescript&since=
   "mcpServers": {
     "github-trending": {
       "type": "sse",
-      "url": "https://cloudflare-mcp1.zx1993.top/mcp/sse",
-      "description": "获取 GitHub 热门项目"
+      "url": "https://cloudflare-mcp1.zx1993.top/mcp/message"
     }
   }
 }
 ```
+
+> 注意：虽然 `type` 设置为 `sse`，但 Kiro 会自动检测并使用 StreamableHTTP 传输方式。
 
 #### Claude Desktop
 
@@ -157,7 +158,7 @@ curl "https://cloudflare-mcp1.zx1993.top/api/trending?language=typescript&since=
   "mcpServers": {
     "github-trending": {
       "type": "sse",
-      "url": "https://cloudflare-mcp1.zx1993.top/mcp/sse"
+      "url": "https://cloudflare-mcp1.zx1993.top/mcp/message"
     }
   }
 }
@@ -350,7 +351,7 @@ curl http://localhost:8788/api/openapi.json
 A: 可能是 GitHub 临时限制了请求。建议配置 KV 缓存，或稍后重试。
 
 ### Q: MCP 连接失败？
-A: 确认 URL 正确使用 `https://` 协议，路径为 `/mcp/sse`。
+A: 确认 URL 正确使用 `https://` 协议，路径为 `/mcp/message`。如果遇到 CORS 或超时问题，请检查服务端的 CORS 配置是否正确。
 
 ### Q: 如何查看日志？
 A: Cloudflare Dashboard → 你的项目 → Functions → Logs

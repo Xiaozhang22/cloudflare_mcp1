@@ -2,7 +2,7 @@
   "mcpServers": {
     "github-trending": {
       "type": "sse",
-      "url": "https://cloudflare-mcp1.zx1993.top/mcp/sse"
+      "url": "https://cloudflare-mcp1.zx1993.top/mcp/message"
     }
   }
 }
