@@ -53,16 +53,16 @@ npx wrangler pages deploy public --project-name=github-trending-service
 
 ```bash
 # 获取今日热门项目
-curl https://your-project.pages.dev/api/trending
+curl https://cloudflare-mcp1.zx1993.top/api/trending
 
 # 按语言筛选
-curl "https://your-project.pages.dev/api/trending?language=python"
+curl "https://cloudflare-mcp1.zx1993.top/api/trending?language=python"
 
 # 按时间范围 (daily/weekly/monthly)
-curl "https://your-project.pages.dev/api/trending?since=weekly"
+curl "https://cloudflare-mcp1.zx1993.top/api/trending?since=weekly"
 
 # 组合使用
-curl "https://your-project.pages.dev/api/trending?language=rust&since=monthly"
+curl "https://cloudflare-mcp1.zx1993.top/api/trending?language=rust&since=monthly"
 ```
 
 ### MCP 配置
@@ -74,7 +74,7 @@ curl "https://your-project.pages.dev/api/trending?language=rust&since=monthly"
   "mcpServers": {
     "github-trending": {
       "type": "sse",
-      "url": "https://your-project.pages.dev/mcp/sse"
+      "url": "https://cloudflare-mcp1.zx1993.top/mcp/sse"
     }
   }
 }
@@ -84,7 +84,7 @@ curl "https://your-project.pages.dev/api/trending?language=rust&since=monthly"
 
 获取 OpenAPI 规范:
 ```
-https://your-project.pages.dev/api/openapi.json
+https://cloudflare-mcp1.zx1993.top/api/openapi.json
 ```
 
 ## 本地开发

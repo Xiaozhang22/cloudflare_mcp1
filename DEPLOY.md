@@ -49,17 +49,17 @@ git push -u origin main
 
 ```
 ✅ Success! Your site is live at:
-https://github-trending-service.pages.dev
+https://cloudflare-mcp1.pages.dev
 ```
 
 ## 步骤 6: 验证部署
 
 ```bash
 # 测试 API
-curl https://github-trending-service.pages.dev/api/trending
+curl https://cloudflare-mcp1.zx1993.top/api/trending
 
 # 测试健康检查
-curl https://github-trending-service.pages.dev/health
+curl https://cloudflare-mcp1.zx1993.top/health
 ```
 
 ## 步骤 7: 配置 MCP (可选)
@@ -72,7 +72,7 @@ curl https://github-trending-service.pages.dev/health
   "mcpServers": {
     "github-trending": {
       "type": "sse",
-      "url": "https://github-trending-service.pages.dev/mcp/sse"
+      "url": "https://cloudflare-mcp1.zx1993.top/mcp/sse"
     }
   }
 }
@@ -84,7 +84,7 @@ curl https://github-trending-service.pages.dev/health
   "mcpServers": {
     "github-trending": {
       "type": "sse", 
-      "url": "https://github-trending-service.pages.dev/mcp/sse"
+      "url": "https://cloudflare-mcp1.zx1993.top/mcp/sse"
     }
   }
 }
