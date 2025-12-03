@@ -22,9 +22,9 @@ export const onRequestGet: PagesFunction = async (context) => {
   const writer = writable.getWriter();
   const encoder = new TextEncoder();
 
-  // 发送 endpoint 事件
+  // 发送 endpoint 事件 - 不带引号的纯 URL
   const init = async () => {
-    await writer.write(encoder.encode(`event: endpoint\ndata: "${messageUrl}"\n\n`));
+    await writer.write(encoder.encode(`event: endpoint\ndata: ${messageUrl}\n\n`));
   };
   init();
 

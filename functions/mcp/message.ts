@@ -3,9 +3,7 @@
  * POST /mcp/message - 处理 MCP 协议请求
  */
 
-interface Env {
-  // 如果需要，可以在这里添加环境变量
-}
+interface Env {}
 
 interface MCPRequest {
   jsonrpc: '2.0';
@@ -46,64 +44,46 @@ const TOOLS = [
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Accept, Authorization, X-Requested-With',
+  'Access-Control-Allow-Headers': '*',
   'Access-Control-Max-Age': '86400',
 };
 
-export const onRequestOptions: PagesFunction = async () => {
-  return new Response(null, { headers: corsHeaders });
-};
-
-// 处理 GET 请求 - 返回提示信息
-export const onRequestGet: PagesFunction = async () => {
-  return new Response(
-    JSON.stringify({ error: 'This endpoint only accepts POST requests' }),
-    { status: 405, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
-  );
-};
-
-// 通用请求处理器 - 确保 POST 请求被正确处理
+// 统一请求处理器
 export const onRequest: PagesFunction<Env> = async (context) => {
   const method = context.request.method;
-  
+
+  // OPTIONS 预检
   if (method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { status: 204, headers: corsHeaders });
   }
-  
+
+  // POST 处理 MCP 消息
   if (method === 'POST') {
     try {
-      const body = await context.request.json() as MCPRequest;
+      const body = (await context.request.json()) as MCPRequest;
       const response = await processRequest(body, context);
       return jsonResponse(response);
-    } catch (error) {
-      return jsonResponse({
-        jsonrpc: '2.0',
-        id: null,
-        error: { code: -32700, message: 'Parse error' },
-      }, 400);
+    } catch {
+      return jsonResponse(
+        { jsonrpc: '2.0', id: null, error: { code: -32700, message: 'Parse error' } },
+        400
+      );
     }
   }
-  
-  // 其他方法返回 405
-  return new Response(
-    JSON.stringify({ error: `Method ${method} not allowed`, allowedMethods: ['POST', 'OPTIONS'] }),
-    { status: 405, headers: { 'Content-Type': 'application/json', 'Allow': 'POST, OPTIONS', ...corsHeaders } }
-  );
+
+  // GET 返回服务信息（而不是 405）
+  if (method === 'GET') {
+    return jsonResponse({
+      service: 'github-trending-mcp',
+      version: '1.0.0',
+      hint: 'Use POST to send MCP messages',
+    });
+  }
+
+  // 其他方法
+  return jsonResponse({ error: `Method ${method} not supported` }, 405);
 };
 
-export const onRequestPost: PagesFunction<Env> = async (context) => {
-  try {
-    const body = await context.request.json() as MCPRequest;
-    const response = await processRequest(body, context);
-    return jsonResponse(response);
-  } catch (error) {
-    return jsonResponse({
-      jsonrpc: '2.0',
-      id: null,
-      error: { code: -32700, message: 'Parse error' },
-    }, 400);
-  }
-};
 
 async function processRequest(
   req: MCPRequest,
@@ -119,33 +99,26 @@ async function processRequest(
         result: {
           protocolVersion: '2024-11-05',
           capabilities: { tools: {} },
-          serverInfo: {
-            name: 'github-trending-mcp',
-            version: '1.0.0',
-          },
+          serverInfo: { name: 'github-trending-mcp', version: '1.0.0' },
         },
       };
 
     case 'tools/list':
-      return {
-        jsonrpc: '2.0',
-        id,
-        result: { tools: TOOLS },
-      };
+      return { jsonrpc: '2.0', id, result: { tools: TOOLS } };
 
     case 'tools/call':
-      return handleToolCall(id, params as { name: string; arguments?: Record<string, unknown> }, context);
+      return handleToolCall(
+        id,
+        params as { name: string; arguments?: Record<string, unknown> },
+        context
+      );
 
     case 'notifications/initialized':
     case 'ping':
       return { jsonrpc: '2.0', id, result: {} };
 
     default:
-      return {
-        jsonrpc: '2.0',
-        id,
-        error: { code: -32601, message: `Method not found: ${method}` },
-      };
+      return { jsonrpc: '2.0', id, error: { code: -32601, message: `Method not found: ${method}` } };
   }
 }
 
@@ -161,12 +134,11 @@ async function handleToolCall(
       const language = (args.language as string) || '';
       const since = (args.since as string) || 'daily';
 
-      // 调用同域的 API 端点
       const url = new URL(context.request.url);
       const apiUrl = `${url.protocol}//${url.host}/api/trending?since=${since}${language ? `&language=${language}` : ''}`;
 
       const response = await fetch(apiUrl);
-      const data = await response.json() as {
+      const data = (await response.json()) as {
         data: Array<{
           rank: number;
           username: string;
@@ -181,9 +153,7 @@ async function handleToolCall(
         since: string;
       };
 
-      // 格式化输出给 LLM
       let text = `GitHub Trending 项目 (语言: ${data.language}, 范围: ${data.since}):\n\n`;
-      
       data.data.slice(0, 15).forEach((repo, i) => {
         text += `${i + 1}. ${repo.username}/${repo.reponame}\n`;
         text += `   ⭐ ${repo.stars.toLocaleString()} 总星 (+${repo.starsToday} 新增)\n`;
@@ -192,27 +162,13 @@ async function handleToolCall(
         text += `   链接: ${repo.url}\n\n`;
       });
 
-      return {
-        jsonrpc: '2.0',
-        id,
-        result: {
-          content: [{ type: 'text', text }],
-        },
-      };
+      return { jsonrpc: '2.0', id, result: { content: [{ type: 'text', text }] } };
     } catch (error) {
-      return {
-        jsonrpc: '2.0',
-        id,
-        error: { code: -32000, message: `Failed to fetch trending: ${error}` },
-      };
+      return { jsonrpc: '2.0', id, error: { code: -32000, message: `Failed to fetch: ${error}` } };
     }
   }
 
-  return {
-    jsonrpc: '2.0',
-    id,
-    error: { code: -32602, message: `Unknown tool: ${name}` },
-  };
+  return { jsonrpc: '2.0', id, error: { code: -32602, message: `Unknown tool: ${name}` } };
 }
 
 function jsonResponse(data: unknown, status = 200): Response {
