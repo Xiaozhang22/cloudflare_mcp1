@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "github-trending": {
+      "type": "sse",
+      "url": "https://cloudflare-mcp1.zx1993.top/mcp/sse"
+    }
+  }
+}

@@ -53,6 +53,43 @@ export const onRequestOptions: PagesFunction = async () => {
   return new Response(null, { headers: corsHeaders });
 };
 
+// 处理 GET 请求 - 返回提示信息
+export const onRequestGet: PagesFunction = async () => {
+  return new Response(
+    JSON.stringify({ error: 'This endpoint only accepts POST requests' }),
+    { status: 405, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+  );
+};
+
+// 通用请求处理器 - 确保 POST 请求被正确处理
+export const onRequest: PagesFunction<Env> = async (context) => {
+  const method = context.request.method;
+  
+  if (method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+  
+  if (method === 'POST') {
+    try {
+      const body = await context.request.json() as MCPRequest;
+      const response = await processRequest(body, context);
+      return jsonResponse(response);
+    } catch (error) {
+      return jsonResponse({
+        jsonrpc: '2.0',
+        id: null,
+        error: { code: -32700, message: 'Parse error' },
+      }, 400);
+    }
+  }
+  
+  // 其他方法返回 405
+  return new Response(
+    JSON.stringify({ error: `Method ${method} not allowed`, allowedMethods: ['POST', 'OPTIONS'] }),
+    { status: 405, headers: { 'Content-Type': 'application/json', 'Allow': 'POST, OPTIONS', ...corsHeaders } }
+  );
+};
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const body = await context.request.json() as MCPRequest;
