@@ -5,7 +5,7 @@ compatibility_date = "2024-11-01"
 # Pages 项目配置
 pages_build_output_dir = "public"
 
-# KV 缓存绑定 (可选 - 在 Cloudflare Dashboard 创建后取消注释)
-# [[kv_namespaces]]
-# binding = "TRENDING_CACHE"
-# id = "<your-kv-namespace-id>"
+# KV 缓存绑定
+[[kv_namespaces]]
+binding = "github-trending-cache"
+id = "447832b3231247c89f7bcfd46d2eb64e"
