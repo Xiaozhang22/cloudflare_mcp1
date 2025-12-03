@@ -7,5 +7,5 @@ pages_build_output_dir = "public"
 
 # KV 缓存绑定
 [[kv_namespaces]]
-binding = "github-trending-cache"
+binding = "TRENDING_CACHE"
 id = "447832b3231247c89f7bcfd46d2eb64e"
