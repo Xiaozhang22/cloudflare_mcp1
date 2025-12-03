@@ -134,10 +134,10 @@ function parseRepoArticle(html: string, rank: number): TrendingRepo | null {
   const langMatch = html.match(/itemprop="programmingLanguage">([^<]+)</);
   const language = langMatch ? langMatch[1].trim() : '';
 
-  const starsMatch = html.match(/href="\/[^/]+\/[^/]+\/stargazers"[^>]*>[\s\S]*?([\d,]+)[\s\S]*?<\/a>/);
+  const starsMatch = html.match(/href="[^"]*stargazers"[^>]*>[\s\S]*?([\d,]+)/i);
   const stars = starsMatch ? parseNumber(starsMatch[1]) : 0;
 
-  const forksMatch = html.match(/href="\/[^/]+\/[^/]+\/forks"[^>]*>[\s\S]*?([\d,]+)[\s\S]*?<\/a>/);
+  const forksMatch = html.match(/href="[^"]*forks"[^>]*>[\s\S]*?([\d,]+)/i);
   const forks = forksMatch ? parseNumber(forksMatch[1]) : 0;
 
   const starsTodayMatch = html.match(/([\d,]+)\s*stars?\s*(today|this week|this month)/i);
