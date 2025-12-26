@@ -59,7 +59,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     // 写入缓存（1小时过期）
     if (context.env.TRENDING_CACHE) {
-      await context.env.TRENDING_CACHE.put(cacheKey, JSON.stringify(repos), { expirationTtl: 3600 });
+      await context.env.TRENDING_CACHE.put(cacheKey, JSON.stringify(repos), { expirationTtl: 31536000 });
     }
 
     return jsonResponse({
